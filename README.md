@@ -5,19 +5,15 @@ date: "2024-09-31"
 output: html_document
 ---
 
-# Laboratorio 4 {style="text-align: center; color: darkblue;"}
+# Laboratorio 4 : Variabilidad de la Frecuencia Cardiaca usando la Transformada Wavelet
 
-::: {style="text-align: center; color: darkblue;"}
-Variabilidad de la Frecuencia Cardiaca usando la Transformada Wavelet
-:::
-
-## Introducción: {style="color: darkred;"}
+## Introducción: 
 
 La variabilidad de la frecuencia cardíaca (HRV) es un indicador no invasivo de la función del sistema nervioso autónomo y refleja la modulación de la actividad cardíaca por factores neurohumorales. Su análisis proporciona información valiosa sobre el estado de salud cardiovascular y puede utilizarse para evaluar el riesgo de enfermedades cardiovasculares, así como para monitorear la respuesta a tratamientos.
 
 En este laboratorio, se propone capturar una señal electrocardiográfica (ECG) utilizando un sensor AD8232 y un sistema de adquisición de datos basado en Arduino UNO R3. La señal capturada será procesada digitalmente en Python, con el objetivo de extraer características relevantes de la HRV.
 
-## Objetivo: {style="color: darkred;"}
+## Objetivo:
 
 El objetivo principal de este laboratorio es analizar la variabilidad de la frecuencia cardíaca a partir de una señal ECG adquirida experimentalmente. Para ello, se llevarán a cabo las siguientes etapas:
 
@@ -27,7 +23,7 @@ El objetivo principal de este laboratorio es analizar la variabilidad de la frec
 4.  Análisis de la HRV en el dominio de la frecuencia: Obtención del espectrograma de la HRV utilizando la transformada wavelet continua, con el fin de identificar las componentes de frecuencia asociadas a diferentes mecanismos fisiológicos.
 5.  Interpretación de los resultados: Análisis de las variaciones en la potencia espectral en las bandas de baja y alta frecuencia para obtener conclusiones sobre el estado del sistema nervioso autónomo y la respuesta del organismo a diferentes estímulos.
 
-# Fundamento Teorico {style="text-align: center; color: darkblue;"}
+# Fundamento Teorico 
 
 **Actividad simpática y parasimpática del sistema nervioso autónomo y efecto de su activiad en la frecuencia cardiaca:**
 
@@ -68,11 +64,12 @@ Las Wavelets, funciones bases de la Transformada Wavelet, son generadas a partir
 3.  **Wavelet de Symlets:** Otra familia de wavelets ortogonales, con simetría y suavidad variables.
 4.  **Wavelet de Morlet:** Es una wavelet compleja que combina una oscilación sinusoidal con una gaussiana. Esta combinación le otorga una excelente localización tanto en tiempo como en frecuencia, lo que la hace muy adecuada para el análisis de señales no estacionarias como el ECG.
 
-## Diagrama de flujo {style="text-align: center; color: darkblue;"}
+## Diagrama de flujo
 
-![Diagrama de flujo:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/eeb47d13fcdeb35de2707f691434c7a2decbe23a/Diagrama%20de%20flujo.png).
+![Diagrama de flujo:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/eeb47d13fcdeb35de2707f691434c7a2decbe23a/Diagrama%20de%20flujo.png)
+Link diagrama de flujo:  https://www.canva.com/design/DAGT8Ga4GBU/MPZWtITwqG352pjyt9zQew/edit?utm_content=DAGT8Ga4GBU&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
-## Adquisición de la señal {style="text-align: center; color: darkblue;"}
+## Adquisición de la señal 
 
 Para la adquisición de la señal ECG, se utilizó el sensor AD8232 conectado a una tarjeta Arduino Uno R3, la cual realizó la conversión analógica-digital a través del pin A0. Los pines de 3.3V y tierra del Arduino se conectaron a sus respectivos pines del sensor para asegurar un circuito común.
 
@@ -99,7 +96,8 @@ void loop() {
 
 Inicialmente, se realizo la configuracion de electrodos en el paciente como se muestra en la siguiente figura y se verificó la señal obtenida mediante el plotter serial de Arduino, comprobando que la captura del ECG fuera correcta. Tanto en el Arduino IDE como en la interfaz gráfica de Python se configuró la **comunicación serial** a 115200 baudios,**la frecuencia de muestreo** se estableció en 500 Hz en ambos programas. Esta frecuencia fue seleccionada siguiendo el criterio del teorema de Nyquist, que indica que la frecuencia de muestreo debe ser al menos el doble de la frecuencia máxima de la señal para evitar aliasing. Dado que la frecuencia máxima de los filtros aplicados es de 40 Hz, la frecuencia de muestreo teóricamente necesaria sería entre 100 y 140 Hz; sin embargo, en la bibliografía se recomienda una frecuencia de 500-1000 Hz para señales de electrocardiogramas, ya que estas frecuencias más altas permiten capturar con mayor precisión detalles finos de la señal ECG, como las complejas morfologías de los picos QRS.
 
-![Configuracion Electrodos:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/eeb47d13fcdeb35de2707f691434c7a2decbe23a/Electrodos_ubicacion.png). ![Señal Plotter Arduino:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/eeb47d13fcdeb35de2707f691434c7a2decbe23a/Se%C3%B1al_Arduino.mp4).
+![Configuracion Electrodos:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/eeb47d13fcdeb35de2707f691434c7a2decbe23a/Electrodos_ubicacion.png).
+![Señal Plotter Arduino:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/886da207ebc3131f97f87762bbb551dde618f937/Se%C3%B1al_arduino.gif)
 
 A continuacion se encuentra el codigo y parametros utilzados en phyton para la adquisicion de la señal:
 
@@ -173,13 +171,15 @@ class principal(QMainWindow):
 
 Luego de la validación, los datos de la señal ECG fueron enviados mediante comunicación serial hacia una interfaz gráfica desarrollada en Python. En esta interfaz, la señal fue recibida, filtrada como veremos en segmentos posteriores y graficada, mostrando tanto la señal original como la señal procesada. Finalmente, se realizo un **periodo de muestreo** de 5 minutos, durante los cuales cada muestra fue cuantificada en niveles de 10 bits (0-1023), proporcionando una resolución suficiente para captar variaciones de voltaje precisas en la señal de ECG. Los datos capturados fueron almacenados en un archivo .txt para su posterior procesamiento. En cuanto a las unidades y escalas, en el eje de tiempo se utilizó segundos (ms) para una interpretación temporal intuitiva, mientras que en el eje de amplitud se emplearon milivoltios (mV), una unidad estándar en ECG que permite cuantificar los potenciales eléctricos generados por la actividad cardíaca. Los valores estadísticos de la señal, tales como el promedio y la desviación estándar, fueron calculados posteriormente para analizar la estabilidad y consistencia de la señal capturada y se podran observar en segmentos posteriores.
 
-![Señal Phyton:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/eeb47d13fcdeb35de2707f691434c7a2decbe23a/Se%C3%B1al_Phyton.mp4).
+![Señal Phyton:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/886da207ebc3131f97f87762bbb551dde618f937/se%C3%B1al_phyton.gif)
 
-## Pre-procesamiento de la señal {style="text-align: center; color: darkblue;"}
+## Pre-procesamiento de la señal 
 
 En esta etapa se implementaron dos tipos de filtros, un pasa-bajo y un pasa-alto, para mejorar la calidad de la señal ECG capturada. Los cálculos específicos de diseño se detallarán a continuación. Los filtros se aplicaron inicialmente en la interfaz gráfica de Python y luego se replicaron en el entorno Spyder (Anaconda) para el procesamiento posterior de los datos. Ambos filtros fueron diseñados siguiendo la bibliografía consultada, donde se recomienda el uso de filtros Butterworth de segundo orden para señales biomédicas, como el ECG, debido a su respuesta de amplitud plana en la banda de paso, que evita distorsionar la señal.
 
-![Calculos de filtros:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/eeb47d13fcdeb35de2707f691434c7a2decbe23a/Se%C3%B1al_Phyton.mp4).
+![Calculos de filtros:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/886da207ebc3131f97f87762bbb551dde618f937/Calculos_1.png)
+![Calculos de filtros:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/886da207ebc3131f97f87762bbb551dde618f937/Calculo_2.png)
+
 
 A continuacion se observa el codigo de los filtros en la interfaz grafica de Phyton:
 
@@ -327,7 +327,7 @@ plt.subplots_adjust(hspace=0.5)  # Ajuste manual, incrementar si es necesario
 plt.show()
 ```
 
-![Señal Orginal y Filtros:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/eeb47d13fcdeb35de2707f691434c7a2decbe23a/Se%C3%B1al_Phyton.mp4).
+![Señal Orginal y Filtros:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/9d0cb199f36c060feb1034c24195002f120b2e45/5minutos.png)
 
 En la grafica podemos observar la señal original y la señal filtrada junto con la grafica de los calculos realizados para los intervalos R-R. En esta primera grafica se realiza en funcion del numero de muestras total (5 minutos), para darnos una visualizacion completa de los datos tomados en nuestra interfaz de phyton. Ademas podemos visualizar que no hay mucha diferencia entre la señal orginen y la señal con los filtros. Esto puede ser debido a que nuestros datos del archivo .txt ya vienen con un proceso de filtracion desde la interfaz.
 
@@ -353,9 +353,9 @@ filtered_ecg_30s = filtered_ecg[:len(time_30s)]
 peaks_30s = peaks[peaks <= len(time_30s)]
 ```
 
-![Señal 10 Segundos](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/eeb47d13fcdeb35de2707f691434c7a2decbe23a/Se%C3%B1al_Phyton.mp4).
+![Señal 10 Segundos](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/9d0cb199f36c060feb1034c24195002f120b2e45/10segundos.png)
 
-## Análisis de la HRV en el dominio del tiempo {style="text-align: center; color: darkblue;"}
+## Análisis de la HRV en el dominio del tiempo 
 
 Continuando con nuestro procesamiento y respectivo analisis, se procedio a calcular los paramtros HVR mas comunes en funcion del tiempo.
 
@@ -404,7 +404,8 @@ print(f"Porcentaje de Intervalos R-R con diferencia > 50 ms (pNN50): {pNN50:.2f}
 
 Adicionalmente, se calculo el inverso del promedio de intervalos RRi lo cual no otorga el valor de la frecuencia cardiaca y se obtuvieron los siguientes resultados, ademas de la grafica comparativa entre la distribución del intervalo R-R y la distribucion de la frecuencia cardiaca.
 
-![Señal Phyton:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/eeb47d13fcdeb35de2707f691434c7a2decbe23a/Se%C3%B1al_Phyton.mp4). ![Señal Phyton:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/eeb47d13fcdeb35de2707f691434c7a2decbe23a/Se%C3%B1al_Phyton.mp4).
+![Señal Phyton:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/9d0cb199f36c060feb1034c24195002f120b2e45/RESULTADOS.png)
+
 
 De acuerdo con estos resultados los cuales nos permiten evaluar la modulación autónoma del corazón, específicamente la actividad de los sistemas simpático y parasimpático por lo cual vamos a realizar una pequeña definición de cada parametro y un analisis critico que nos brinde informacion acerca de nuestro paciente. A continuacion analisamos punto por punto:
 
@@ -420,9 +421,11 @@ De acuerdo con estos resultados los cuales nos permiten evaluar la modulación a
 
 Ahora bien, teniendo en cuanta este analisis en conjunto, los parámetros RMSSD, SDSD y pNN50 indican una respuesta parasimpática adecuada y saludable, mientras que el SDNN moderado y el promedio RRi relativamente bajo (frecuencia cardíaca alta) sugieren una posible predominancia simpática o un menor tono vagal en reposo. Esta combinación de una frecuencia cardíaca promedio elevada y una variabilidad a corto plazo alta podría indicar un sistema autónomo equilibrado pero con una tendencia hacia la respuesta simpática, posiblemente como reacción a factores externos (como estrés o actividad física reciente).
 
+![Señal Phyton:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/fc357539f1697ef6187d24e52f2ab83b91bd625e/frecuenciacardiaca.png)
+
 Por otro lado, Las gráficas muestran la distribución de los intervalos R-R y la frecuencia cardíaca en una muestra de ECG. La mayoría de los intervalos R-R se concentran entre 0.6 y 0.7 segundos, indicando una frecuencia cardíaca regular en reposo, mientras que algunos valores dispersos sugieren variabilidad en el ritmo cardíaco. En la segunda gráfica, la frecuencia cardíaca se concentra entre 80 y 100 latidos por minuto (lpm), lo cual es típico en adultos en reposo, aunque también se observan valores extremos que podrían estar asociados con variaciones en los intervalos R-R. En conjunto, estos datos sugieren un ritmo cardíaco mayormente regular.
 
-## Aplicación de transformada Wavelet {style="text-align: center; color: darkblue;"}
+## Aplicación de transformada Wavelet
 
 En la última fase del laboratorio, se aplica la Transformada Wavelet Continua (CWT) utilizando una wavelet de tipo Morlet a la señal ECG, conforme a los parámetros previamente definidos. La CWT permite descomponer la señal original en componentes de frecuencia y tiempo, mediante una suma ponderada de la señal f(t) con una función wavelet Ψ reescalada y desplazada a través del tiempo. Las wavelets, como la de Morlet, son formas de onda de duración limitada con un promedio de cero, lo que las hace adecuadas para analizar variaciones rápidas en señales biológicas. Específicamente, la wavelet de Morlet, que combina una onda sinusoidal con una ventana gaussiana, es biológicamente apropiada para analizar señales como el ECG, ya que permite capturar tanto las frecuencias bajas como las altas, ajustando la longitud de la ventana de tiempo en función de la frecuencia analizada.
 
@@ -525,19 +528,19 @@ plt.ylim(0, 0.5)  # Limitar para visualizar solo hasta 0.5 Hz (rango relevante)
 plt.show()
 ```
 
-![Espectograma Wavelet-Morlet:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/eeb47d13fcdeb35de2707f691434c7a2decbe23a/Se%C3%B1al_Phyton.mp4).
+![Espectograma Wavelet-Morlet:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/be4901c3979704ae3769bf8d300755e018422ab2/espectrograma.png).
 
 Esta gráfica muestra el espectrograma resultante de aplicar la transformada wavelet de Morlet a la señal ECG, donde se observa la distribución de las frecuencias a lo largo del tiempo y su potencia espectral en distintas bandas. En el eje vertical se encuentran las frecuencias (en Hz), mientras que en el eje horizontal se representa el tiempo (en segundos). La potencia está codificada por color, donde los tonos rojos y amarillos representan niveles más altos de potencia, mientras que los tonos azules indican una menor potencia espectral.
 
 En el espectrograma, se observa que las frecuencias más bajas (0 a 0.1 Hz) muestran una mayor potencia a lo largo de la señal, lo que es característico de las modulaciones en las bandas ultra baja frecuencia (ULF) y muy baja frecuencia (VLF). A medida que la frecuencia aumenta hacia el rango de baja frecuencia (LF) y alta frecuencia (HF), la potencia disminuye, lo cual es consistente con el comportamiento esperado en un análisis ECG, donde las componentes de muy baja frecuencia tienden a tener mayor potencia debido a la regulación autónoma. Se observa, además, que hay fluctuaciones en la potencia de LF y HF en ciertos intervalos de tiempo, lo cual podría estar vinculado a cambios en la actividad respiratoria y al sistema nervioso autónomo.
 
-![Potencia espectral 2 Bandas:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/eeb47d13fcdeb35de2707f691434c7a2decbe23a/Se%C3%B1al_Phyton.mp4).
+![Potencia espectral 2 Bandas:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/be4901c3979704ae3769bf8d300755e018422ab2/2bandas.png).
 
 Esta gráfica muestra la potencia espectral específica en las bandas de baja frecuencia (LF, en azul) y alta frecuencia (HF, en rojo) a lo largo del tiempo. La banda LF se asocia principalmente con la regulación autónoma, mientras que la HF está ligada a la actividad respiratoria.
 
 En el análisis de esta gráfica, se observa que la potencia en la banda LF se mantiene relativamente estable, con ligeros aumentos en ciertos intervalos de tiempo. Esto es indicativo de una modulación autónoma constante, sin variaciones abruptas. Por otro lado, la banda HF muestra picos más pronunciados, especialmente al inicio y al final del periodo analizado, sugiriendo una actividad respiratoria más fluctuante en estos intervalos. La variación en HF refleja que hay episodios de incremento de la actividad respiratoria, que coinciden con aumentos en la potencia espectral de HF.
 
-![Potencia espectral 4 Bandas:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/eeb47d13fcdeb35de2707f691434c7a2decbe23a/Se%C3%B1al_Phyton.mp4).
+![Potencia espectral 4 Bandas:](https://github.com/SeebastianOchoa/Imgs_Lab4/blob/be4901c3979704ae3769bf8d300755e018422ab2/4bandas.png).
 
 En esta última gráfica, se presenta la potencia espectral en cuatro bandas de frecuencia: ultra baja frecuencia (ULF, en morado), muy baja frecuencia (VLF, en verde), baja frecuencia (LF, en azul), y alta frecuencia (HF, en rojo). Esta visualización permite observar cómo se distribuye la potencia en una escala completa de frecuencias para la señal ECG analizada.
 
@@ -545,7 +548,7 @@ El análisis muestra que la banda ULF presenta una potencia considerablemente ma
 
 Las bandas LF y HF muestran potencias mucho menores en comparación con ULF y VLF. LF mantiene una ligera variabilidad a lo largo del tiempo, mientras que HF muestra variaciones más abruptas y picos en puntos específicos. Estos patrones en LF y HF confirman el comportamiento esperado en relación a la actividad autonómica y respiratoria, respectivamente, y muestran cómo los diferentes sistemas fisiológicos impactan en la señal ECG en distintas escalas de frecuencia.
 
-## Bibliografia {style="text-align: center; color: darkred;"}
+## Bibliografia 
 
 1.  Alvarado F.V , Camacho V.S , Monge R.S; 2017. "Reviste Médica de la universidad de Costa Rica", (Variabilidad de la frecuencia cardiaca como indicador de la actividad del sistema nervioso autonomo) Vol 11. Art 5. ISNN: 1659-2441
 
